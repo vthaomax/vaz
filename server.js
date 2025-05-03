@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const app = express();
 
-const allowedOrigins = ['https://taikhoanfb.shop'];
+const allowedOrigins = ['https://taikhoanfb.shop', 'https://cloneig.shop'];
 const API_KEY = process.env.API_KEY;
 const JWT_SECRET = process.env.JWT_SECRET;
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
