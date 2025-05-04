@@ -2,16 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
-const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
 
 const allowedOrigins = ['https://taikhoanfb.shop', 'https://cloneig.shop'];
-const API_KEY = process.env.API_KEY;
-const JWT_SECRET = process.env.JWT_SECRET;
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+app.set('trust proxy', 1);
 
 app.use(cors({
     origin: function(origin, callback) {
@@ -32,28 +31,8 @@ const limiter = rateLimit({
 });
 app.use('/chat', limiter);
 
-app.use('/chat', (req, res, next) => {
-    const key = req.headers['x-api-key'];
-    const token = req.headers['authorization'];
-
-    if (key !== API_KEY) {
-        return res.status(401).json({ reply: '❌ Invalid API Key' });
-    }
-
-    if (!token) {
-        return res.status(401).json({ reply: '❌ Token missing' });
-    }
-
-    try {
-        jwt.verify(token, JWT_SECRET);
-        next();
-    } catch (err) {
-        return res.status(401).json({ reply: '❌ Invalid Token' });
-    }
-});
-
 app.get('/', (req, res) => {
-    res.send('✅ IG2FA is running with full security!');
+    res.send('✅ IG2FA is running without API key & JWT!');
 });
 
 app.post('/chat', async (req, res) => {
